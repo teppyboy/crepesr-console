@@ -1,0 +1,18 @@
+{
+  "name": "crepesr-console",
+  "version": "1.0.0",
+  "description": "Web-based console for CrepeSR",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "will insert later"
+  },
+  "keywords": [
+    "crepesr"
+  ],
+  "author": "tretrauit <tretrauit@gmail.com>",
+  "license": "MIT"
+}

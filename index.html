@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console for CrepeSR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal@2.36.0/js/jquery.terminal.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/jquery.terminal@2.36.0/css/jquery.terminal.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .terminal {
+        --size: 1.5;
+      }
+    </style>
+    <script>
+      // ref: https://stackoverflow.com/q/67322922/387194
+      const server = localStorage.getItem("server");
+      const uid = localStorage.getItem("uid");
+      async function execute(command) {
+        const args = command.split(" ");
+        const cmd = args.shift().toLowerCase();
+        switch (cmd) {
+          case "setinstance":
+            if (args.length < 1) {
+              throw new Error(
+                "setinstance requires 1 server to set, available servers are HK, SG/SGP, EU/Europe, US/USA or your private server."
+              );
+            }
+            let targetServer = args[0].toLowerCase();
+            switch (targetServer) {
+              case "hk":
+                targetServer = "165.154.224.215";
+                break;
+              case "sg":
+                targetServer = "128.199.202.56";
+                break;
+              case "sgp":
+                targetServer = "128.199.202.56";
+                break;
+              case "eu":
+                targetServer = "sr.crepe.moe";
+                break;
+              case "europe":
+                targetServer = "sr.crepe.moe";
+                break;
+              case "us":
+                targetServer = "162.212.154.121:5393";
+                break;
+              case "usa":
+                targetServer = "162.212.154.121:5393";
+                break;
+              default:
+                targetServer = targetServer
+                  .replace("http://", "")
+                  .replace("https://", "");
+                break;
+            }
+            localStorage.setItem("server", targetServer);
+            return "Server set to " + targetServer;
+          case "getinstance":
+            return "Current server is " + server;
+          case "setuid":
+            if (args.length < 1) {
+              throw new Error("setuid requires 1 UID to set.");
+            }
+            const targetUID = args[0];
+            localStorage.setItem("uid", targetUID);
+            return "UID set to " + targetUID;
+          case "getuid":
+            return "Current UID is " + uid;
+          case "help":
+            return "Available commands are: setinstance, getinstance, setuid, getuid, help. Other commands are passed to the server.";
+          default:
+            const rsp = await fetch(
+              "https://" +
+                server +
+                "/api/gm?" +
+                new URLSearchParams({
+                  password: "BOcucIIfsCJnHLIn",
+                  uid: 1,
+                  command: command,
+                })
+            );
+            const json = await rsp.json();
+            if (json.code !== 0) {
+              throw new Error(json.msg);
+            }
+          // Invoke the command to the server
+        }
+        return "Server did not send us a response.";
+      }
+      let greetings = "Welcome to CrepeSR Console!";
+      if (server === null || uid === null) {
+        greetings +=
+          '\nTo get started please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n';
+      } else {
+        greetings +=
+          "\nCurrent server is " + server + ".\nCurrent UID is " + uid + ".\n";
+      }
+      jQuery(function ($, undefined) {
+        $("#terminal").terminal(
+          async function (command) {
+            if (command !== "") {
+              try {
+                const result = await execute(command);
+                if (result !== undefined) {
+                  this.echo(new String(result));
+                }
+              } catch (e) {
+                this.error(new String(e));
+              }
+            }
+          },
+          {
+            greetings: greetings,
+            name: "js_demo",
+            height: $(window).height(),
+            prompt: "CrepeSR> ",
+          }
+        );
+      });
+    </script>
+  </head>
+  <body>
+    <div id="terminal"></div>
+  </body>
+</html>
