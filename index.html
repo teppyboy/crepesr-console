@@ -20,8 +20,8 @@
       }
     </style>
     <script>
-      const server = localStorage.getItem("server");
-      const uid = localStorage.getItem("uid");
+      let server = localStorage.getItem("server");
+      let uid = localStorage.getItem("uid");
       async function execute(command) {
         const args = command.split(" ");
         const cmd = args.shift().toLowerCase();
