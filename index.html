@@ -56,6 +56,7 @@
                 break;
             }
             localStorage.setItem("server", targetServer);
+            server = targetServer;
             return "Server set to " + targetServer;
           case "getinstance":
             return "Current server is " + server;
@@ -65,6 +66,7 @@
             }
             const targetUID = args[0];
             localStorage.setItem("uid", targetUID);
+            uid = targetUID;
             return "UID set to " + targetUID;
           case "getuid":
             return "Current UID is " + uid;
