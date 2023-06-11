@@ -71,13 +71,18 @@
           case "help":
             return "Available commands are: setinstance, getinstance, setuid, getuid, help. Other commands are passed to the server.";
           default:
+            if (server === null || uid === null) {
+              throw new Error(
+                "Server and UID are not set, please set them by executing setinstance and setuid."
+              );
+            }
             const rsp = await fetch(
               "https://" +
                 server +
                 "/api/gm?" +
                 new URLSearchParams({
                   password: "BOcucIIfsCJnHLIn",
-                  uid: 1,
+                  uid: uid,
                   command: command,
                 })
             );
@@ -89,7 +94,8 @@
         }
         throw new Error("Server did not send us a response.");
       }
-      let greetings = "Welcome to CrepeSR Console!\nCrepeSR and this console are free software, if you've paid for this, you've been scammed.";
+      let greetings =
+        "Welcome to CrepeSR Console!\nCrepeSR and this console are free software, if you've paid for this, you've been scammed.";
       if (server === null || uid === null) {
         greetings +=
           '\n\nTo get started, please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n';
