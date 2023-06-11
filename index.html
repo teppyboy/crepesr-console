@@ -92,6 +92,7 @@
             if (json.retcode !== 0) {
               throw new Error(json.msg);
             }
+            return json.msg;
           // Invoke the command to the server
         }
         throw new Error("Server did not send us a response.");
