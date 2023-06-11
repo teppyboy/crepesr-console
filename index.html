@@ -89,20 +89,18 @@
         }
         throw new Error("Server did not send us a response.");
       }
-      let greetings = "Welcome to CrepeSR Console!";
+      let greetings = "Welcome to CrepeSR Console!\nCrepeSR and this console are free software, if you've paid for this, you've been scammed.";
       if (server === null || uid === null) {
         greetings +=
-          '\n\nTo get started, please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n\n';
+          '\n\nTo get started, please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n';
       } else {
         greetings +=
           "\n\nCurrent server is " +
           server +
           ".\nCurrent UID is " +
           uid +
-          ".\n\n";
+          ".\n";
       }
-      greetings +=
-        "CrepeSR and this console are free software, if you've paid for this, you've been scammed.\n\n";
       jQuery(function ($, undefined) {
         $("#terminal").terminal(
           async function (command) {
