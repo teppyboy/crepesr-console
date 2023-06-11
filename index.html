@@ -110,6 +110,10 @@
           uid +
           ".\n";
       }
+      if (Math.random() <= 0.2) {
+        // Free advertisement :D
+        greetings += "\nHaving problem with proxy setup? Try my proxy here: https://github.com/teppyboy/crepesr-proxy\n"
+      }
       jQuery(function ($, undefined) {
         $("#terminal").terminal(
           async function (command) {
