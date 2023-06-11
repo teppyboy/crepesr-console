@@ -20,7 +20,6 @@
       }
     </style>
     <script>
-      // ref: https://stackoverflow.com/q/67322922/387194
       const server = localStorage.getItem("server");
       const uid = localStorage.getItem("uid");
       async function execute(command) {
@@ -39,20 +38,14 @@
                 targetServer = "165.154.224.215";
                 break;
               case "sg":
-                targetServer = "128.199.202.56";
-                break;
               case "sgp":
                 targetServer = "128.199.202.56";
                 break;
               case "eu":
-                targetServer = "sr.crepe.moe";
-                break;
               case "europe":
                 targetServer = "sr.crepe.moe";
                 break;
               case "us":
-                targetServer = "162.212.154.121:5393";
-                break;
               case "usa":
                 targetServer = "162.212.154.121:5393";
                 break;
@@ -94,16 +87,22 @@
             }
           // Invoke the command to the server
         }
-        return "Server did not send us a response.";
+        throw new Error("Server did not send us a response.");
       }
       let greetings = "Welcome to CrepeSR Console!";
       if (server === null || uid === null) {
         greetings +=
-          '\nTo get started please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n';
+          '\n\nTo get started, please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n\n';
       } else {
         greetings +=
-          "\nCurrent server is " + server + ".\nCurrent UID is " + uid + ".\n";
+          "\n\nCurrent server is " +
+          server +
+          ".\nCurrent UID is " +
+          uid +
+          ".\n\n";
       }
+      greetings +=
+        "CrepeSR and this console are free software, if you've paid for this, you've been scammed.\n\n";
       jQuery(function ($, undefined) {
         $("#terminal").terminal(
           async function (command) {
