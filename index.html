@@ -89,7 +89,7 @@
                 })
             );
             const json = await rsp.json();
-            if (json.code !== 0) {
+            if (json.retcode !== 0) {
               throw new Error(json.msg);
             }
           // Invoke the command to the server
