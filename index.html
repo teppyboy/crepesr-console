@@ -20,14 +20,53 @@
       }
     </style>
     <script>
+      const serverList = {
+        HK: "165.154.224.215",
+        SGP: "cn-sr.crepe.moe",
+        Europe: "sr.crepe.moe",
+        USA: "162.212.154.121:5393",
+      };
+      function getFriendlyName(address) {
+        for (const [key, value] of Object.entries(serverList)) {
+          if (value === address) {
+            return key;
+          }
+        }
+        return "Unknown";
+      }
       let server = localStorage.getItem("server");
       let uid = localStorage.getItem("uid");
+      async function invokeServer(command) {
+        if (server === null || uid === null) {
+          throw new Error(
+            "Server and UID are not set, please set them by executing setinstance and setuid."
+          );
+        }
+        const rsp = await fetch(
+          "https://" +
+            server +
+            "/api/gm?" +
+            new URLSearchParams({
+              password: "BOcucIIfsCJnHLIn",
+              uid: uid,
+              command: command,
+            })
+        );
+        const json = await rsp.json();
+        if (json.retcode !== 0) {
+          throw new Error(json.msg);
+        }
+        return json.msg;
+      }
       async function execute(command) {
         const args = command.split(" ");
         const cmd = args.shift().toLowerCase();
+        if (cmd.startsWith("s/")) {
+          return await invokeServer(command.substring(2));
+        }
         switch (cmd) {
           case "setinstance":
-            if (args.length < 1) {
+            if (args.length < 1 || args[0] === "") {
               throw new Error(
                 "setinstance requires 1 server to set, available servers are HK, SG/SGP, EU/Europe, US/USA or your private server."
               );
@@ -35,19 +74,19 @@
             let targetServer = args[0].toLowerCase();
             switch (targetServer) {
               case "hk":
-                targetServer = "165.154.224.215";
+                targetServer = serverList.HK;
                 break;
               case "sg":
               case "sgp":
-                targetServer = "128.199.202.56";
+                targetServer = serverList.SGP;
                 break;
               case "eu":
               case "europe":
-                targetServer = "sr.crepe.moe";
+                targetServer = serverList.Europe;
                 break;
               case "us":
               case "usa":
-                targetServer = "162.212.154.121:5393";
+                targetServer = serverList.USA;
                 break;
               default:
                 targetServer = targetServer
@@ -59,9 +98,15 @@
             server = targetServer;
             return "Server set to " + targetServer;
           case "getinstance":
-            return "Current server is " + server;
+            return (
+              "Current server is " +
+              server +
+              " (" +
+              getFriendlyName(server) +
+              ")"
+            );
           case "setuid":
-            if (args.length < 1) {
+            if (args.length < 1 || args[0] === "") {
               throw new Error("setuid requires 1 UID to set.");
             }
             const targetUID = args[0];
@@ -70,29 +115,15 @@
             return "UID set to " + targetUID;
           case "getuid":
             return "Current UID is " + uid;
+          case "github":
+            return "https://github.com/teppyboy/crepesr-console";
           case "help":
-            return "Available commands are: setinstance, getinstance, setuid, getuid, help. Other commands are passed to the server.";
-          default:
-            if (server === null || uid === null) {
-              throw new Error(
-                "Server and UID are not set, please set them by executing setinstance and setuid."
-              );
-            }
-            const rsp = await fetch(
-              "https://" +
-                server +
-                "/api/gm?" +
-                new URLSearchParams({
-                  password: "BOcucIIfsCJnHLIn",
-                  uid: uid,
-                  command: command,
-                })
+            return (
+              "Available commands are: setinstance, getinstance, setuid, getuid, github, help.\n" +
+              "Other commands are passed to the server, but you can force a command to be executed in server by prefixing it with s/."
             );
-            const json = await rsp.json();
-            if (json.retcode !== 0) {
-              throw new Error(json.msg);
-            }
-            return json.msg;
+          default:
+            return await invokeServer(command);
           // Invoke the command to the server
         }
         throw new Error("Server did not send us a response.");
@@ -106,13 +137,17 @@
         greetings +=
           "\n\nCurrent server is " +
           server +
-          ".\nCurrent UID is " +
+          " (" +
+          getFriendlyName(server) +
+          ")" +
+          "\nCurrent UID is " +
           uid +
-          ".\n";
+          "\n";
       }
       if (Math.random() <= 0.2) {
         // Free advertisement :D
-        greetings += "\nHaving problem with proxy setup? Try my proxy here: https://github.com/teppyboy/crepesr-proxy\n"
+        greetings +=
+          "\nHaving problem with proxy setup? Try my proxy here: https://github.com/teppyboy/crepesr-proxy\n";
       }
       jQuery(function ($, undefined) {
         $("#terminal").terminal(
