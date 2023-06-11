@@ -42,16 +42,30 @@
             "Server and UID are not set, please set them by executing setinstance and setuid."
           );
         }
-        const rsp = await fetch(
-          "https://" +
-            server +
-            "/api/gm?" +
-            new URLSearchParams({
-              password: "BOcucIIfsCJnHLIn",
-              uid: uid,
-              command: command,
-            })
-        );
+        let rsp;
+        try {
+          rsp = await fetch(
+            "https://" +
+              server +
+              "/api/gm?" +
+              new URLSearchParams({
+                password: "BOcucIIfsCJnHLIn",
+                uid: uid,
+                command: command,
+              })
+          );
+        } catch (e) {
+          rsp = await fetch(
+            "http://" +
+              server +
+              "/api/gm?" +
+              new URLSearchParams({
+                password: "BOcucIIfsCJnHLIn",
+                uid: uid,
+                command: command,
+              })
+          );
+        }
         const json = await rsp.json();
         if (json.retcode !== 0) {
           throw new Error(json.msg);
