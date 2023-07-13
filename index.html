@@ -110,7 +110,8 @@
             }
             localStorage.setItem("server", targetServer);
             server = targetServer;
-            return "Server set to " + targetServer;
+            return "Server set to " + targetServer
+            + "\nIf you see 'Not secure' in the address bar, it means the server you're using doesn't have valid SSL ceritifcate.";
           case "getinstance":
             return (
               "Current server is " +
@@ -143,7 +144,8 @@
         throw new Error("Server did not send us a response.");
       }
       let greetings =
-        "Welcome to CrepeSR Console!\nCrepeSR and this console are free software, if you've paid for this, you've been scammed.";
+        "Welcome to CrepeSR Console!\nCrepeSR and this console are free software, if you've paid for this, you've been scammed."
+        + "\n\nIf you see 'Not secure' in the address bar, it means the server you're using doesn't have valid SSL ceritifcate.";
       if (server === null || uid === null) {
         greetings +=
           '\n\nTo get started, please set the server and UID by executing "setinstance <server>" and "setuid <UID>"\n';
