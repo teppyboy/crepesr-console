@@ -131,7 +131,7 @@
                 targetServer = serverList.USA;
                 break;
               case "yuuki":
-                throw new Error("You have to specify a Yuuki server, valid servers are Japan/JP and Indonesia/ID.");
+                throw new Error("You have to specify a Yuuki server, valid servers are Japan/JP and Indonesia/ID.\nE.g 'setinstance yuuki-jp' for YuukiPS JP server.");
               default:
                 if (targetServer.startsWith("yuuki-")) {
                   switch (targetServer.substring(6)) {
