@@ -117,18 +117,22 @@
             switch (targetServer) {
               case "hk":
                 targetServer = serverList.HK;
+                yuukiTarget = null;
                 break;
               case "sg":
               case "sgp":
                 targetServer = serverList.SGP;
+                yuukiTarget = null;
                 break;
               case "eu":
               case "europe":
                 targetServer = serverList.Europe;
+                yuukiTarget = null;
                 break;
               case "us":
               case "usa":
                 targetServer = serverList.USA;
+                yuukiTarget = null;
                 break;
               case "yuuki":
                 throw new Error("You have to specify a Yuuki server, valid servers are Japan/JP and Indonesia/ID.\nE.g 'setinstance yuuki-jp' for YuukiPS JP server.");
