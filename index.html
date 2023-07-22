@@ -162,7 +162,7 @@
             localStorage.setItem("yuukiTarget", yuukiTarget);
             server = targetServer;
             let returnStr = "Server set to " + targetServer;
-            if (yuukiTarget !== null) {
+            if (yuukiTarget !== null && yuukiTarget !== "null") {
               returnStr += " (" + yuukiTarget + ")";
             }
             return returnStr + "\nIf you see 'Not secure' in the address bar, it means the server you're using doesn't have a valid SSL certificate.";
@@ -209,7 +209,7 @@
           " (" +
           getFriendlyName(server) +
           ")"
-        if (yuukiTarget !== null) {
+        if (yuukiTarget !== null && yuukiTarget !== "null") {
           greetings += " (" + yuukiTarget + ")";
         }
         greetings += "\nCurrent UID is " +
