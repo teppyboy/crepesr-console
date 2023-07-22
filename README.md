@@ -1,6 +1,6 @@
-# Console for CrepeSR servers
+# Console for CrepeSR/YuukiPS servers
 
-> This is an unofficial product and is not affiliated with CrepeSR in any way.
+> This is an unofficial product and is not affiliated with CrepeSR/YuukiPS in any way.
 
 ## Usage
 
